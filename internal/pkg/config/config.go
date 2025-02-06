@@ -14,6 +14,8 @@ type Config struct {
 	SMTPPassword string
 
 	APIPort string
+
+	JwtSecret string
 }
 
 func NewConfig() *Config {
@@ -38,5 +40,6 @@ func loadFromEnv() *Config {
 		SMTPUser:     os.Getenv("USER"),
 		SMTPPassword: os.Getenv("PASSWORD"),
 		APIPort:      os.Getenv("API_PORT"),
+		JwtSecret:    os.Getenv("JWT_SECRET"),
 	}
 }

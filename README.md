@@ -46,4 +46,11 @@ go run cmd/main.go
 ```
 
 
+# Info
+
+
+### This repository was made for personal use. 
+### Feel free to use it and modify it as you wish.
+### It should be used with a service account as sender.
+### It is pretty straight forward and simple.
 
