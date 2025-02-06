@@ -5,6 +5,7 @@ import (
 	"go-mail-service/internal/api/routes"
 	"go-mail-service/internal/pkg/config"
 	"go-mail-service/internal/pkg/mail"
+	"log"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,19 +23,23 @@ func NewApp() *App {
 
 	mailService := mail.NewMailService(cfg)
 
-	cntrl := controllers.NewController(mailService)
+	control := controllers.NewController(mailService)
 
-	routes.SetRoute(g, cntrl)
+	routes.SetRoute(g, control)
 
 	return &App{
 		API:         g,
 		Config:      cfg,
 		MailService: mailService,
-		Controller:  cntrl,
+		Controller:  control,
 	}
 
 }
 
 func (a *App) Run() {
-	a.API.Run(a.Config.APIPort)
+	gin.SetMode(gin.DebugMode)
+	err := a.API.Run(":" + a.Config.APIPort)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

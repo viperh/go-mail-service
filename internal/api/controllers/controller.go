@@ -27,13 +27,13 @@ func (cn *Controller) SendMail(c *gin.Context) {
 		return
 	}
 
-	err := cn.MailService.SendMail(req.From, req.To, req.Subject, req.Body)
+	err := cn.MailService.SendMail(req.From, req.To, req.Subject, req.Body, req.IsHtml)
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "What  the f"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Mail sent successuflly!"})
+	c.JSON(http.StatusOK, gin.H{"message": "Mail sent successfully!"})
 
 }
