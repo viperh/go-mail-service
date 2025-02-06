@@ -55,4 +55,5 @@ go run cmd/main.go
 ### It is pretty straight forward and simple.
 
 # Added Jwt Auth for external Service.
-## Make sure you have the same JwtSecret. Generate a jwt and send it in header as usual.
+## Make sure you have the same JwtSecret. 
+## Generate a jwt and send it in header as usual.
