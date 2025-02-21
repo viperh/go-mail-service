@@ -6,6 +6,7 @@ import (
 	"go-mail-service/internal/api/routes"
 	"go-mail-service/internal/pkg/config"
 	"go-mail-service/internal/pkg/mail"
+	"go-mail-service/internal/pkg/rabbit"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -17,29 +18,37 @@ type App struct {
 	MailService   *mail.MailService
 	JwtMiddleware *middlewares.JwtMiddleware
 	Controller    *controllers.Controller
+	Consumer      *rabbit.Consumer
 }
 
 func NewApp() *App {
-	g := gin.Default()
+	var g *gin.Engine
+	var jwtMiddleware *middlewares.JwtMiddleware
+	var controller *controllers.Controller
+	var consumer *rabbit.Consumer
 
 	cfg := config.NewConfig()
-
 	mailService := mail.NewMailService(cfg)
+	if cfg.Mode == "api" {
+		g = gin.Default()
 
-	middleware := middlewares.NewMiddleware(cfg)
+		jwtMiddleware := middlewares.NewMiddleware(cfg)
+		g.Use(jwtMiddleware.JwtMiddlewareFunc)
+		controller := controllers.NewController(mailService)
+		routes.SetRoute(g, controller)
+	}
 
-	g.Use(middleware.JwtMiddlewareFunc)
-
-	control := controllers.NewController(mailService)
-
-	routes.SetRoute(g, control)
+	if cfg.Mode == "rabbitmq" {
+		consumer = rabbit.NewRabbitConsumer(cfg, mailService)
+	}
 
 	return &App{
 		API:           g,
 		Config:        cfg,
 		MailService:   mailService,
-		JwtMiddleware: middleware,
-		Controller:    control,
+		JwtMiddleware: jwtMiddleware,
+		Controller:    controller,
+		Consumer:      consumer,
 	}
 
 }

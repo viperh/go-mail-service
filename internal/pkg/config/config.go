@@ -16,6 +16,10 @@ type Config struct {
 	APIPort string
 
 	JwtSecret string
+
+	RabbitMQURL string
+	RabbitQueue string
+	Mode        string
 }
 
 func NewConfig() *Config {
@@ -41,5 +45,8 @@ func loadFromEnv() *Config {
 		SMTPPassword: os.Getenv("PASSWORD"),
 		APIPort:      os.Getenv("API_PORT"),
 		JwtSecret:    os.Getenv("JWT_SECRET"),
+		RabbitMQURL:  os.Getenv("RABBITMQ_URL"),
+		RabbitQueue:  os.Getenv("RABBITMQ_QUEUE"),
+		Mode:         os.Getenv("MODE"),
 	}
 }
