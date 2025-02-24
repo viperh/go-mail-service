@@ -30,7 +30,7 @@ go run cmd/main.go
 ## Endpoints
 
 
-### Send mail
+### Send mail using api
 
 <b>POST</b> /sendMail
 
@@ -45,6 +45,23 @@ go run cmd/main.go
 }
 ```
 
+
+### Send email using rabbitmq
+
+See env.example for rabbitmq configuration.
+
+The service will take the message from the queue and send the email.
+
+```
+{
+"from": "example.from@gmail.com",
+"to": ["example.to@gmail.com"],
+"subject": "example subject",
+"body": "example body",
+"isHtml": "true/false",
+
+}
+```
 
 # Info
 
